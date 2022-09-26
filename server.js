@@ -10,14 +10,14 @@ const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
 
+const users = [] // Liste des utilisateurs, normalement ca vient de la db
+
 const initializePassport = require('./passport-config')
 initializePassport(
   passport,
-  email => users.find(user => user.email === email),
-  id => users.find(user => user.id === id)
+  email => users.find(user => user.email === email), // Retourne l'utilisateur qui correspond à l'email
+  id => users.find(user => user.id === id) // Retourne l'id qui correspond à l'utilisateur
 )
-
-const users = []
 
 app.set('view-engine', 'ejs')
 app.use(express.urlencoded({ extended: false }))
@@ -51,12 +51,12 @@ app.get('/register', checkNotAuthenticated, (req, res) => {
 
 app.post('/register', checkNotAuthenticated, async (req, res) => {
   try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10)
-    users.push({
-      id: Date.now().toString(),
+    const hashedPassword = await bcrypt.hash(req.body.password, 10) // bcrypt hash le mot de passe de l'utilisateur enregistré
+    users.push({ // On ajoute le nouvel utilisateur au tableau 'users'
+      id: Date.now().toString(), // Normalement, on devrait utiliser la clé primaire recupérée de la db entant que valeur
       name: req.body.name,
       email: req.body.email,
-      password: hashedPassword
+      password: hashedPassword // mot de passe hashé
     })
     res.redirect('/login')
   } catch {
@@ -64,14 +64,16 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
   }
 })
 
+// Déconnexion
 app.delete('/logout', (req, res) => {
-  req.logOut()
+  req.logOut() // 'logOut()' est une méthode de Passport.js qui permet de se déconnecter de la session
   res.redirect('/login')
 })
 
+// L'idéal serait d'implémenter cette fonction dans un fichier middleware dédié
 function checkAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next()
+  if (req.isAuthenticated()) { // 'isAuthenticated()' est une méthode de Passport.js qui retourne 'true' si l'utilisateur est authentifié
+    return next() 
   }
 
   res.redirect('/login')
