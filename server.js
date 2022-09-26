@@ -39,7 +39,7 @@ app.get('/login', checkNotAuthenticated, (req, res) => {
   res.render('login.ejs')
 })
 
-app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
+app.post('/login', checkNotAuthenticated, passport.authenticate('local', { // 'local' défini sa stratégie d'authentification
   successRedirect: '/',
   failureRedirect: '/login',
   failureFlash: true
@@ -56,7 +56,7 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
       id: Date.now().toString(), // Normalement, on devrait utiliser la clé primaire recupérée de la db entant que valeur
       name: req.body.name,
       email: req.body.email,
-      password: hashedPassword // mot de passe hashé
+      password: hashedPassword
     })
     res.redirect('/login')
   } catch {
