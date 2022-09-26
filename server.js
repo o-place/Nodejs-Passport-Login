@@ -70,6 +70,7 @@ app.delete('/logout', (req, res) => {
   res.redirect('/login')
 })
 
+// Vérifie que l'utilisateur est bien connecté pour executer tel ou tel middleware
 // L'idéal serait d'implémenter cette fonction dans un fichier middleware dédié
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { // 'isAuthenticated()' est une méthode de Passport.js qui retourne 'true' si l'utilisateur est authentifié
@@ -80,6 +81,7 @@ function checkAuthenticated(req, res, next) {
 }
 
 // Vérifie que l'utilisateur n'est PAS connecté pour executer tel ou tel middleware
+// L'idéal serait d'implémenter cette fonction dans un fichier middleware dédié
 function checkNotAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return res.redirect('/')
