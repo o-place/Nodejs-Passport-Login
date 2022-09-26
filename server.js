@@ -79,6 +79,7 @@ function checkAuthenticated(req, res, next) {
   res.redirect('/login')
 }
 
+// Vérifie que l'utilisateur n'est PAS connecté pour executer tel ou tel middleware
 function checkNotAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return res.redirect('/')
