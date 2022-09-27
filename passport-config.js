@@ -28,7 +28,7 @@ function initialize(passport, getUserByEmail, getUserById) {
   // serializeUser() sets an id (the user email in this case) as the cookie in the user's browser, Passport takes that user id and stores it internally on req.session
   passport.serializeUser((user, done) => done(null, user.id))
 
-  // deserializeUser() function uses the id (user email in this case) to look up the user in the database and retrieve the user object with data.
+  // deserializeUser() function uses the id from the session (user email in this case) to look up the user in the database and retrieve the user object with data, and attach it to req.user
   passport.deserializeUser((id, done) => done(null, getUserById(id))
 }
 
