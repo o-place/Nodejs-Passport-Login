@@ -22,7 +22,7 @@ function initialize(passport, getUserByEmail, getUserById) {
     }
   }
 
-  // usernameField: nom de l'user, par défaut la valeur est 'username'
+  // usernameField: nom de la key dans req.body, par défaut la valeur est 'username', il faut taper le bon nom de champs pour que passport le trouve (dans ce cas: req.body.email)
   passport.use(new LocalStrategy({ usernameField: 'email' }, authenticateUser))
   
   // permet d'enregistrer l'utilisateur dans la session, via l'id de l'utilisateur
