@@ -25,10 +25,10 @@ function initialize(passport, getUserByEmail, getUserById) {
   // usernameField: nom de la key dans req.body, par défaut la valeur est 'username', il faut taper le bon nom de champs pour que passport le trouve (dans ce cas: req.body.email)
   passport.use(new LocalStrategy({ usernameField: 'email' }, authenticateUser))
   
-  // permet d'enregistrer l'utilisateur dans la session, via l'id de l'utilisateur
+  // serializeUser() sets an id (the user email in this case) as the cookie in the user's browser, Passport takes that user id and stores it internally on req.session
   passport.serializeUser((user, done) => done(null, user.id))
-  
-  // permet de supprimer l'utilisateur de la session
+
+  // deserializeUser() function uses the id (user email in this case) to look up the user in the database and retrieve the user object with data.
   passport.deserializeUser((id, done) => done(null, getUserById(id))
 }
 
